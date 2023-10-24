@@ -3,7 +3,7 @@ package ar.com.educacionit.bootcamp;
 import java.util.List;
 
 
-public class User {
+public class User extends Entity{
 
 	private Long id;
 	private String username;
@@ -59,6 +59,11 @@ public class User {
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", password=" + password + ", roles=" + roles + "]";
+	}
+
+	@Override
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }

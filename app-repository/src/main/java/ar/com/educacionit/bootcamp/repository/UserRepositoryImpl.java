@@ -1,5 +1,6 @@
 package ar.com.educacionit.bootcamp.repository;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -10,6 +11,7 @@ public class UserRepositoryImpl extends BaseCrud<User> implements UserRepository
 	public UserRepositoryImpl() {
 		super(User.class, "USER");
 	}
+	
 	@Override
 	protected User fromResultSetToEntity(ResultSet resultSet) throws SQLException {
 		Long id = resultSet.getLong(1);
@@ -18,5 +20,16 @@ public class UserRepositoryImpl extends BaseCrud<User> implements UserRepository
 
 		return new User(id, useranme, password);
 	}
+	
+	@Override
+	protected String getSaveSQL() {		
+		return "(username,password) values(?,?)";
+	}
 
+	@Override
+	protected void saveEntity(User entidad, PreparedStatement pst) throws SQLException {
+		pst.setString(1, entidad.getUsername());
+		pst.setString(2, entidad.getPassword());
+	}
+	
 }

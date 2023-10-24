@@ -1,6 +1,6 @@
 package ar.com.educacionit.bootcamp;
 
-public class Rol {
+public class Rol extends Entity{
 	private Long id;
 	private String role;
 
@@ -27,6 +27,11 @@ public class Rol {
 	@Override
 	public String toString() {
 		return "Rol [id=" + id + ", role=" + role + "]";
+	}
+
+	@Override
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }

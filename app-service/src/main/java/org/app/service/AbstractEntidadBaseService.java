@@ -16,8 +16,19 @@ public abstract class AbstractEntidadBaseService<T> implements EntidadBaseServic
 	public Collection<T> buscarTodos() {		
 		return this.repository.findAll();
 	}
+	
 	@Override
 	public T buscarPorId(Long id) {
 		return this.repository.getById(id);
+	}
+	
+	@Override
+	public void eliminarPorId(Long id) {
+		this.repository.delete(id);
+	}
+
+	@Override
+	public void guardar(T entity) {
+		this.repository.save(entity);
 	}
 }
