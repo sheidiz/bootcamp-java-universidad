@@ -7,4 +7,5 @@ public interface EntidadBaseService<T> {
 	public T buscarPorId(Long id);
 	public void eliminarPorId(Long id);
 	public void guardar(T entity);
+	public void actualizar(T entity);
 }

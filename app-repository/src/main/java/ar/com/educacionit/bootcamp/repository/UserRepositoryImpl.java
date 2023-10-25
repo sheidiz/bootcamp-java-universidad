@@ -25,9 +25,14 @@ public class UserRepositoryImpl extends BaseCrud<User> implements UserRepository
 	protected String getSaveSQL() {		
 		return "(username,password) values(?,?)";
 	}
+	@Override
+	protected String getUpdateSQL() {		
+		return " SET username = ?, password = ? WHERE id = ?";
+	}
 
 	@Override
 	protected void saveEntity(User entidad, PreparedStatement pst) throws SQLException {
+		if(entidad.getId() != null) pst.setLong(3, entidad.getId());
 		pst.setString(1, entidad.getUsername());
 		pst.setString(2, entidad.getPassword());
 	}

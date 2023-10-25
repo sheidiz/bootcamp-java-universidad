@@ -34,13 +34,17 @@ public class RoleRepositoryImpl extends BaseCrud<Rol> implements RoleRepository 
 	
 	@Override
 	protected String getSaveSQL() {
-		// TODO Auto-generated method stub
-		return null;
+		return "(ROLE) values(?)";
 	}
 
 	@Override
 	protected void saveEntity(Rol entidad, PreparedStatement pst) throws SQLException {
-		// TODO Auto-generated method stub
+		pst.setString(1, entidad.getRole());
+	}
 
+	@Override
+	protected String getUpdateSQL() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

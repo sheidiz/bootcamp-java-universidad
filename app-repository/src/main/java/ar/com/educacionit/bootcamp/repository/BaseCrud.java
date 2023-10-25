@@ -122,11 +122,29 @@ public abstract class BaseCrud<T extends Entity> implements BaseRepository<T> {
 	}
 	
 	protected abstract String getSaveSQL();
+	protected abstract String getUpdateSQL();
 	protected abstract void saveEntity(T entidad,PreparedStatement pst) throws SQLException;
 	
 	@Override
 	public void update(T entidad) {
-		System.out.println("Actualizando " + type.getName() + entidad);		
+		System.out.println("Actualizando " + type.getName() + entidad);
+		String sql ="UPDATE " + this.table + this.getUpdateSQL();
+
+		try(Connection connection = AdministradorDeConexiones.getConnection()) {
+
+			PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+
+			saveEntity(entidad, statement);
+
+			statement.executeUpdate();
+
+			ResultSet resKey = statement.getGeneratedKeys();
+			if(resKey.next()) {
+				entidad.setId(resKey.getLong(1));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}		
 	}
 	public List<T> findBySQL(String sql) {
 		List<T> list = new ArrayList<>();
