@@ -47,4 +47,10 @@ public class RoleRepositoryImpl extends BaseCrud<Rol> implements RoleRepository 
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	protected void setUpdateSQL(Rol entidad, PreparedStatement pst) throws SQLException {
+		// TODO Auto-generated method stub
+		
+	}
 }

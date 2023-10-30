@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
 
 import ar.com.educacionit.bootcamp.Entity;
@@ -67,13 +68,12 @@ public abstract class BaseCrud<T extends Entity> implements BaseRepository<T> {
 	
 	@Override
 	public T getById(Long id) {
-		System.out.println("Buscando " + type.getName() + "por id="+id);
 		String sql = "SELECT * FROM "+ this.table + " WHERE ID = " + id;
 
 		T entity = null;
 
 		//JDBC: par poder consultar a la tabla via java
-
+		System.out.println(sql);
 		try(Connection connection = AdministradorDeConexiones.getConnection()) {
 			
 			//armar el sql
@@ -101,9 +101,8 @@ public abstract class BaseCrud<T extends Entity> implements BaseRepository<T> {
 		
 	@Override
 	public void save(T entidad) {
-		System.out.println("Grabando " + type.getName() + entidad);
 		String sql ="INSERT INTO " + this.table + this.getSaveSQL();
-
+		System.out.println(sql);
 		try(Connection connection = AdministradorDeConexiones.getConnection()) {
 
 			PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
@@ -123,25 +122,29 @@ public abstract class BaseCrud<T extends Entity> implements BaseRepository<T> {
 	
 	protected abstract String getSaveSQL();
 	protected abstract String getUpdateSQL();
+	protected abstract void setUpdateSQL(T entidad,PreparedStatement pst) throws SQLException;
 	protected abstract void saveEntity(T entidad,PreparedStatement pst) throws SQLException;
 	
 	@Override
 	public void update(T entidad) {
 		System.out.println("Actualizando " + type.getName() + entidad);
-		String sql ="UPDATE " + this.table + this.getUpdateSQL();
+		String sql ="UPDATE " + this.table + " SET " + this.getUpdateSQL() + "WHERE id = ?";
 
 		try(Connection connection = AdministradorDeConexiones.getConnection()) {
 
-			PreparedStatement statement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+			PreparedStatement statement = connection.prepareStatement(sql);
 
-			saveEntity(entidad, statement);
-
+			setUpdateSQL(entidad, statement);
+			
+			char[] ar = sql.toCharArray();
+			int contador=0;
+			for (int i = 0; i < ar.length; i++) {
+				if(ar[i]=='?') contador++;
+			}
+			System.out.println(contador);
+			System.out.println("ultimo signo es " + sql.lastIndexOf('?')); 
 			statement.executeUpdate();
 
-			ResultSet resKey = statement.getGeneratedKeys();
-			if(resKey.next()) {
-				entidad.setId(resKey.getLong(1));
-			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}		

@@ -13,11 +13,6 @@ public class User extends Entity{
 
 	//se usa cuando el registro venga de la base
 	public User(Long id, String username, String password) {
-		//Anticurruption layer (D.D.D)
-		if(id == null || username == null || password == null) {
-			throw new IllegalArgumentException("Algun campo es null");
-		}
-
 		this.id = id;
 		this.username = username;
 		this.password = password;

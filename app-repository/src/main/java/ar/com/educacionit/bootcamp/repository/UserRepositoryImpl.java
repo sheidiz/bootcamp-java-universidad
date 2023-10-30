@@ -27,7 +27,7 @@ public class UserRepositoryImpl extends BaseCrud<User> implements UserRepository
 	}
 	@Override
 	protected String getUpdateSQL() {		
-		return " SET username = ?, password = ? WHERE id = ?";
+		return "username = ?, password = ? ";
 	}
 
 	@Override
@@ -35,6 +35,13 @@ public class UserRepositoryImpl extends BaseCrud<User> implements UserRepository
 		if(entidad.getId() != null) pst.setLong(3, entidad.getId());
 		pst.setString(1, entidad.getUsername());
 		pst.setString(2, entidad.getPassword());
+	}
+
+	@Override
+	protected void setUpdateSQL(User entidad, PreparedStatement pst) throws SQLException {
+		pst.setString(1, entidad.getUsername());
+		pst.setString(2, entidad.getPassword());
+		pst.setLong(3, entidad.getId());
 	}
 	
 }
