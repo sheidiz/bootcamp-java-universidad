@@ -20,7 +20,8 @@
     <module>app-repository</module>   
     <module>app-domain</module> 
     <module>app-service</module>
-    <module>app-web</module>  
+    <module>app-web</module>
+    <module>rest-api-connector</module>
   </modules>
 
 </project>

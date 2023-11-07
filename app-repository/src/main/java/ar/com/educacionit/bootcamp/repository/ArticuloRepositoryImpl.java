@@ -5,11 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.time.ZoneId;
 
 import ar.com.educacionit.bootcamp.Articulo;
+import ar.com.educacionit.bootcamp.User;
 
-public class ArticuloRepositoryImpl extends BaseCrud<Articulo> implements ArticuloRepository{
+public class ArticuloRepositoryImpl extends BaseCrud<Articulo> implements ArticuloRepository {
 
 	public ArticuloRepositoryImpl() {
 		super(Articulo.class,"articulo");
@@ -17,8 +19,14 @@ public class ArticuloRepositoryImpl extends BaseCrud<Articulo> implements Articu
 
 	@Override
 	protected Articulo fromResultSetToEntity(ResultSet res) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
+		Long id = res.getLong(1);
+		String titulo = res.getString(2);
+		Long editorial_id = res.getLong(3);
+		Long isbn = res.getLong(4);
+		Integer paginas = res.getInt(5);
+		String idioma = res.getString(6);
+		LocalDate fechaPublicacion = res.getDate(7).toLocalDate();
+		return new Articulo(id, editorial_id, isbn, paginas, idioma, fechaPublicacion);
 	}
 
 	@Override
@@ -39,14 +47,13 @@ public class ArticuloRepositoryImpl extends BaseCrud<Articulo> implements Articu
 
 	@Override
 	protected String getUpdateSQL() {
-		// TODO Auto-generated method stub
+//		return "username = ?, password = ? ";
 		return null;
 	}
 
 	@Override
 	protected void setUpdateSQL(Articulo entity, PreparedStatement pst) throws SQLException {
-		// TODO Auto-generated method stub
-
+//		"(editorial_id,isbn,nro_paginas,idioma,fecha_publicacion) values (?,?,?,?,?)";
 	}
 
 }
