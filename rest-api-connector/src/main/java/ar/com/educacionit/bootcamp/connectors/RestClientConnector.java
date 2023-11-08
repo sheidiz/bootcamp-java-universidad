@@ -21,9 +21,7 @@ public class RestClientConnector<T> {
 		this.url = url;
 		this.type = type;
 	}
-
-	public T execute() {
-
+	public Response getResponse() {
 		Client client = ClientBuilder.newClient();
 
 		WebTarget target = this.buildWebTarget(client);
@@ -35,39 +33,38 @@ public class RestClientConnector<T> {
 		if(response.getStatus() != Status.OK.getStatusCode()) {
 			throw new RuntimeException (response.getStatusInfo().getReasonPhrase());
 		}
-
+		return response;
+	}
+	public T execute() {
+		Response response = this.getResponse();
+		
 		/*GenericType<List<Categoria>> listType = new GenericType<List<Categoria>>() {};		
 		List<Categoria> list = response.readEntity(listType);*/
-		T responseDto = this.buildFromResponse(response);
+		T responseDto = response.readEntity(this.type);
 
 		return responseDto;
 	}
 	public List<T> executeArray() {
 
-		Client client = ClientBuilder.newClient();
+		Response response = this.getResponse();
 
-		WebTarget target = this.buildWebTarget(client);
+		try {
+			GenericType<List<T>> responseDto = new GenericType<List<T>>() {}; 
 
-		Invocation.Builder invocation = target.request(MediaType.APPLICATION_JSON);
-
-		Response response = this.buildResponse(invocation); 
-
-		if(response.getStatus() != Status.OK.getStatusCode()) {
-			throw new RuntimeException (response.getStatusInfo().getReasonPhrase());
+			return response.readEntity(responseDto);
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-
-		List<T> responseDto = this.buildFromResponseArray(response);
-
-		return responseDto;
+		return null;
 	}
 	
-	private T buildFromResponse(Response response) {
+	/*private T buildFromResponse(Response response) {
 		try {
 			return response.readEntity(this.type);
 		} catch (Exception e) {
-			/*Object obj = this.type.getConstructor().newInstance();
-			GenericType<List<Categoria>> listType = new GenericType<List<Categoria>>() {};		
-			List<Categoria> list = response.readEntity(listType);*/
+			//Object obj = this.type.getConstructor().newInstance();
+			//GenericType<List<Categoria>> listType = new GenericType<List<Categoria>>() {};		
+			//List<Categoria> list = response.readEntity(listType);
 			e.printStackTrace();
 		}
 		return null;
@@ -81,7 +78,7 @@ public class RestClientConnector<T> {
 			e.printStackTrace();
 		}
 		return null;
-	}
+	}*/
 
 	private Response buildResponse(Builder invocation) {
 		//asumo que las peticiones son GET
