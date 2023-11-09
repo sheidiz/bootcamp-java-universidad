@@ -4,6 +4,7 @@ import java.util.List;
 
 import jakarta.ws.rs.client.Client;
 import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.Entity;
 import jakarta.ws.rs.client.Invocation;
 import jakarta.ws.rs.client.Invocation.Builder;
 import jakarta.ws.rs.client.WebTarget;
@@ -12,80 +13,97 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 
-public class RestClientConnector<T> {
+public abstract class RestClientConnector<T> {
 
 	private String url;
 	private Class<T> type;
+	private GenericType<List<T>> listType;
 
-	public RestClientConnector(String url, Class<T> type) {
+	public RestClientConnector(String url, Class<T> type, GenericType<List<T>> listType) {
 		this.url = url;
 		this.type = type;
+		this.listType = listType;
 	}
-	public Response getResponse() {
+
+	public T get(String path) {
+
 		Client client = ClientBuilder.newClient();
 
-		WebTarget target = this.buildWebTarget(client);
+		WebTarget target = client.target(url);
+		
+		if(path != null) {
+			target = target.path(path);
+		}
 
 		Invocation.Builder invocation = target.request(MediaType.APPLICATION_JSON);
-
-		Response response = this.buildResponse(invocation); 
-
-		if(response.getStatus() != Status.OK.getStatusCode()) {
-			throw new RuntimeException (response.getStatusInfo().getReasonPhrase());
-		}
-		return response;
-	}
-	public T execute() {
-		Response response = this.getResponse();
 		
-		/*GenericType<List<Categoria>> listType = new GenericType<List<Categoria>>() {};		
-		List<Categoria> list = response.readEntity(listType);*/
-		T responseDto = response.readEntity(this.type);
+		Response response = invocation.get();
+		
+		if (response.getStatus() != Status.OK.getStatusCode()) {
+			throw new RuntimeException(response.getStatusInfo().getReasonPhrase());
+		}
+		
+		T responseDto = this.buildFromResponse(response);
 
 		return responseDto;
 	}
-	public List<T> executeArray() {
 
-		Response response = this.getResponse();
+	public List<T> find(String path) {
 
-		try {
-			GenericType<List<T>> responseDto = new GenericType<List<T>>() {}; 
+		Invocation.Builder invoBuilder = buildInvocationBuilder(path);
+		
+		Response response = invoBuilder.get(); 
+		
+		List<T> responseDto = this.buildListFromResponse(response);
 
-			return response.readEntity(responseDto);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
+		return responseDto;
 	}
 	
-	/*private T buildFromResponse(Response response) {
-		try {
-			return response.readEntity(this.type);
-		} catch (Exception e) {
-			//Object obj = this.type.getConstructor().newInstance();
-			//GenericType<List<Categoria>> listType = new GenericType<List<Categoria>>() {};		
-			//List<Categoria> list = response.readEntity(listType);
-			e.printStackTrace();
+	public Object create(Object dto) {
+
+		Invocation.Builder invocation = buildInvocationBuilder(null);
+		
+		Response response = this.buildPost(invocation, dto);
+
+		if (response.getStatus() != Status.OK.getStatusCode()) {
+			throw new RuntimeException(response.getStatusInfo().getReasonPhrase());
 		}
-		return null;
+		
+		return this.buildFromResponse(response);
 	}
-	private List<T> buildFromResponseArray(Response response) {
-		try {
-			GenericType<List<T>> listType = new GenericType<List<T>>() {}; 
-
-			return response.readEntity(listType);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return null;
-	}*/
-
-	private Response buildResponse(Builder invocation) {
-		//asumo que las peticiones son GET
-		return invocation.get();
+	
+	protected Response buildPost(Builder invocation, Object dto) {
+		return invocation.post(Entity.entity(dto,MediaType.APPLICATION_JSON));
 	}
 
-	private WebTarget buildWebTarget(Client client) {
-		return client.target(url);
+	protected Invocation.Builder buildInvocationBuilder(String path) {
+		Client client = ClientBuilder.newClient();
+
+		WebTarget target = client.target(url); 
+				
+		if(path != null) {
+			target = target.path(path);
+		}
+	
+		Invocation.Builder invocation = target.request(MediaType.APPLICATION_JSON);
+
+		/*Response response = this.buildResponse(invocation);
+
+		if (response.getStatus() != Status.OK.getStatusCode()) {
+			throw new RuntimeException(response.getStatusInfo().getReasonPhrase());
+		}
+		return response;
+		*/
+		return invocation;
+	}
+
+
+	protected T buildFromResponse(Response response) {
+		// un objeto simple
+		return response.readEntity(this.type);
+	}
+
+	protected List<T> buildListFromResponse(Response response) {
+		return response.readEntity(this.listType);
 	}
 }

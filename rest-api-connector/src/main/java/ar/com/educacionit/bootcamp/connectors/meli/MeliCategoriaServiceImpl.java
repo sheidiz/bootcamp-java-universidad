@@ -4,13 +4,23 @@ import java.util.List;
 
 import ar.com.educacionit.bootcamp.connectors.meli.dto.Categoria;
 
-public class MeliCategoriaServiceImpl {
-	public Categoria getCategoria(String categoria) {
-		return null;
-		
+public class MeliCategoriaServiceImpl implements MeliCategoriaService {
+
+	private MeliConnector executor;
+	
+	public MeliCategoriaServiceImpl(String url) {
+		executor = new MeliConnector(url);
 	}
-	public List<Categoria> findCategorias(){
-		return null;
-		
+	
+	public Categoria getCategoria(String categoria) {
+		return this.executor.get("/categories/"+categoria);
+	}
+
+	public List<Categoria> findCategorias() {
+		return executor.find("/sites/MLA/categories");
+	}
+
+	public void creatCategoria(Categoria dto) {
+		executor.create(dto);
 	}
 }

@@ -22,5 +22,10 @@
     	<artifactId>app-service</artifactId>
     	<version>0.0.1-SNAPSHOT</version>
     </dependency>
+    <dependency>
+    	<groupId>ar.com.educacionit</groupId>
+    	<artifactId>rest-api-connector</artifactId>
+    	<version>0.0.1-SNAPSHOT</version>
+    </dependency>
   </dependencies>
 </project>
