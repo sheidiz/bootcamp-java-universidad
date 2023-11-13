@@ -9,7 +9,6 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 
 import ar.com.educacionit.bootcamp.Articulo;
-import ar.com.educacionit.bootcamp.User;
 
 public class ArticuloRepositoryImpl extends BaseCrud<Articulo> implements ArticuloRepository {
 

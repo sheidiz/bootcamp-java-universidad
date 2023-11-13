@@ -11,6 +11,10 @@ public class Rol extends Entity{
 		this.id = id;
 		this.role = role;
 	}
+	
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public Rol(String role) {
 		this.role = role;
@@ -29,9 +33,8 @@ public class Rol extends Entity{
 		return "Rol [id=" + id + ", role=" + role + "]";
 	}
 
-	@Override
-	public void setId(Long id) {
-		this.id = id;
+	public void setRole(String role) {
+		this.role = role;
 	}
-
+	
 }

@@ -8,19 +8,19 @@ public class Articulo extends Entity{
 	private Integer nroPaginas;
 	private String idioma;
 	private LocalDate fechaPublicacion;
-
+	
 	public Articulo(Long id,
 			Long editorial, Long isbn, Integer nroPaginas, String idioma, LocalDate fechaPublicacion) {		
 		this.id = id;
 		init(editorial, isbn, nroPaginas, idioma, fechaPublicacion);
 	}
 
-
+	
 	public Articulo(Long editorial, Long isbn, Integer nroPaginas, String idioma, LocalDate fechaPublicacion) {
 		super();
 		init(editorial, isbn, nroPaginas, idioma, fechaPublicacion);
 	}
-
+	
 	private void init(Long editorial, Long isbn, Integer nroPaginas, String idioma, LocalDate fechaPublicacion) {
 		this.editorial = editorial;
 		this.isbn = isbn;
@@ -85,6 +85,6 @@ public class Articulo extends Entity{
 		return "Articulo [editorial=" + editorial + ", isbn=" + isbn + ", nroPaginas=" + nroPaginas + ", idioma="
 				+ idioma + ", fechaPublicacion=" + fechaPublicacion + "]";
 	}
-
-
+	
+	
 }

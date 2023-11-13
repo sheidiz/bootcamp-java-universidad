@@ -3,8 +3,6 @@ package ar.com.educacionit.bootcamp.controllers.jersey;
 import java.io.IOException;
 import java.util.List;
 
-import org.app.service.ServiceLocator;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ar.com.educacionit.bootcamp.controllers.jersey.meli.dto.Categoria;

@@ -26,6 +26,7 @@ public class MeliController extends HttpServlet{
 		c.setId("12345");
 		c.setName("Name");
 		
+		
 		servieRest.creatCategoria(c);
 		
 //		List<Categoria> categorias = servieRest.findCategorias();

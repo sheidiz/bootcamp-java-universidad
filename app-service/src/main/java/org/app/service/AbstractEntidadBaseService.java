@@ -8,7 +8,7 @@ public abstract class AbstractEntidadBaseService<T> implements EntidadBaseServic
 
 	protected BaseRepository<T> repository;
 
-	public AbstractEntidadBaseService(BaseRepository repository) {
+	public AbstractEntidadBaseService(BaseRepository<T> repository) {
 		this.repository = repository;
 	}
 

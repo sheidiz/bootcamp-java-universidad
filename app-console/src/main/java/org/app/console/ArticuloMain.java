@@ -1,6 +1,5 @@
 package org.app.console;
 
-import java.time.LocalDate;
 
 import org.app.service.ArticuloService;
 import org.app.service.ServiceLocator;
