@@ -21,6 +21,7 @@ public class ArticuloController extends HttpServlet{
 	private ArticuloService service = (ArticuloService )ServiceLocator.getService(ArticuloService.class);
 
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
 		// /api/articulo/id
 		if(req.getParameter("id") == null || req.getParameter("id").isEmpty()) {
 			Collection<Articulo> articulos = service.buscarTodos();
@@ -31,26 +32,26 @@ public class ArticuloController extends HttpServlet{
 			resp.getWriter().print(articulo);
 		}		
 	}
-
+	
 	//alta de articulo	
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) 
 			throws ServletException, IOException {
 
 		//recibir datos por request!!
 		ArticuloRequestVO input = new ArticuloRequestVO(req);
-
+		
 		LocalDate fechaPublicacion = LocalDate.now();
-
+		
 		//Collection<Articulo> entity  = service.buscarTodos();
 		Articulo newArticulo = new Articulo(input.getEditorial(),
 				input.getIsbn(), 
 				input.getNroPaginas(),
 				input.getIdioma(),
 				fechaPublicacion);
-
+		
 		service.guardar(newArticulo);
-
+		
 		resp.getWriter().print("articulo id:" + newArticulo.getId() + " alta ok");
 	}
-
+	
 }
