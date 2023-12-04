@@ -10,10 +10,10 @@ public class RoleMain
     public static void main( String[] args )
     {
     	RoleService service = (RoleService) ServiceLocator.getService(RoleService.class);    	
-    	
-    	Rol newUser = service.buscarPorId(1L);
-    	newUser.setRole("usuario");
-    	
-    	service.actualizar(newUser);
+//    	
+//    	Rol newUser = service.buscarPorId(1L);
+//    	newUser.setRole("usuario");
+//    	
+//    	service.actualizar(newUser);
     }
 }

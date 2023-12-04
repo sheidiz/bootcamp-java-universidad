@@ -1,6 +1,7 @@
 package org.app.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import ar.com.educacionit.bootcamp.Rol;
 import ar.com.educacionit.bootcamp.User;
@@ -16,13 +17,15 @@ public class UserServiceImpl extends AbstractEntidadBaseService<User> implements
 		super(new UserRepositoryImpl());
 		this.roleRepository = new RoleRepositoryImpl();
 	}
+
 	@Override
-	public User buscarPorId(Long id) {
-		User user = super.buscarPorId(id);
-		if(user != null) {
+	public Optional<User> buscarPorId(Long id) {
+		Optional<User> user = super.buscarPorId(id);
+		if(user.isPresent()) {
 			List<Rol> roles = this.roleRepository.findByUserId(id);
-			user.setRoles(roles);
+			user.get().setRoles(roles);
 		}
 		return user;
 	}
+
 }

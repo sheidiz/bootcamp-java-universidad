@@ -11,10 +11,10 @@ public class UserMain
     {
     	UserService service = (UserService) ServiceLocator.getService(UserService.class);    	
     	
-    	User newUser = service.buscarPorId(9L);
-    	newUser.setUsername("usuario");
-    	newUser.setPassword("123456");
-    	
-    	service.actualizar(newUser);
+//    	User newUser = service.buscarPorId(9L);
+//    	newUser.setUsername("usuario");
+//    	newUser.setPassword("123456");
+//    	
+//    	service.actualizar(newUser);
     }
 }
