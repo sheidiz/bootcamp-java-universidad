@@ -40,7 +40,7 @@ public abstract class BaseCrud<T extends Entity> implements BaseRepository<T> {
 				System.out.println("Se elimino el id:" + id);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}		
 	}
 	
@@ -60,7 +60,7 @@ public abstract class BaseCrud<T extends Entity> implements BaseRepository<T> {
 				list.add(this.fromResultSetToEntity(resultSet));
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}		
 		
 		return list;
@@ -89,7 +89,7 @@ public abstract class BaseCrud<T extends Entity> implements BaseRepository<T> {
 				entity = this.fromResultSetToEntity(resultSet);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}		
 		
 		//Api Reflection
@@ -116,7 +116,7 @@ public abstract class BaseCrud<T extends Entity> implements BaseRepository<T> {
 				entidad.setId(resKey.getLong(1));
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}		
 	}
 	

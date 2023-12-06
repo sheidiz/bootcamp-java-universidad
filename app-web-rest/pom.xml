@@ -61,6 +61,14 @@
 		    <artifactId>mapstruct-processor</artifactId>
 		    <version>${org.mapstruct.version}</version>
 		</dependency>
+		<!-- junit -->
+		<!--https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter-engine -->
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>5.10.1</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>app-web-rest</finalName>

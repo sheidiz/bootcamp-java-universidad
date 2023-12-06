@@ -30,7 +30,7 @@ public class ArticuloController extends HttpServlet{
 		}else {
 			Long id = Long.parseLong(req.getParameter("id"));		
 			Optional<Articulo> articulo = service.buscarPorId(id);		
-			resp.getWriter().print(articulo);
+			resp.getWriter().print(articulo.get());
 		}		
 	}
 	
